@@ -123,60 +123,53 @@ parameters:
 
 jobs:
 - ${{ each machine in parameters.Matrix }}:
-    - template: /eng/pipelines/templates/jobs/ci.yml
-      parameters:
-        Artifacts: ${{ parameters.Artifacts }}
-        ServiceDirectory: ${{ parameters.ServiceDirectory }}
-        CtestRegex: ${{ parameters.CtestRegex }}
-        CoverageReportPath: ${{ parameters.CoverageReportPath }}
+  - job: Validate_${{ machine.Key }}
+    condition: and(succeededOrFailed(), ne(variables['Skip.Test'], 'true'))
+    pool:
+      name: ${{ machine.Value.Pool }}
+      vmImage: ${{ machine.Value.OsVmImage }}
 
-    - job: Validate_${{ machine.Key }}
-      condition: and(succeededOrFailed(), ne(variables['Skip.Test'], 'true'))
-      pool:
-        name: ${{ machine.Value.Pool }}
-        vmImage: ${{ machine.Value.OsVmImage }}
+    variables:
+    - name: CMOCKA_XML_FILE
+      value: "%g-test-results.xml"
+    - name: CMOCKA_MESSAGE_OUTPUT
+      value: "xml"
+    - name: BuildArgs
+      value: ""
+    - name: CmakeEnvArg
+      value: ""
+    - name: CmakeArgs
+      value: ""
+    - name: AZURE_TEST_MODE
+      value: "PLAYBACK"
+    - name: CODE_COVERAGE
+      value: "${{ parameters.Coverage }}"
+    # Compatibility with the old build architecture
+    # TODO: Eliminate this and use template logic to shorten the number of
+    # steps instead.
+    - name: OSVmImage
+      value: ${{ parameters.Value.OsVmImage }}
 
-      variables:
-      - name: CMOCKA_XML_FILE
-        value: "%g-test-results.xml"
-      - name: CMOCKA_MESSAGE_OUTPUT
-        value: "xml"
-      - name: BuildArgs
-        value: ""
-      - name: CmakeEnvArg
-        value: ""
-      - name: CmakeArgs
-        value: ""
-      - name: AZURE_TEST_MODE
-        value: "PLAYBACK"
-      - name: CODE_COVERAGE
-        value: "${{ parameters.Coverage }}"
-      # Compatibility with the old build architecture
-      # TODO: Eliminate this and use template logic to shorten the number of
-      # steps instead.
-      - name: OSVmImage
-        value: ${{ parameters.Value.OsVmImage }}
+    steps:
+      - ${{ each configuration in machine.Value.BuildConfigurations }}:
+        - template: /eng/pipelines/templates/steps/devops-variables-set.yml
+          parameters:
+            Variables: ${{ configuration.Value }}
+        # TODO: Refactor
+        - pwsh: |
+            Remove-Item build/ -Recurse -Force
+          displayName: Reset build folder
 
-      steps:
-        - ${{ each configuration in machine.Value.BuildConfigurations }}:
-          - template: /eng/pipelines/templates/steps/devops-variables-set.yml
-            parameters:
-              Variables: ${{ configuration.Value }}
-          # TODO: Refactor
-          - pwsh: |
-              Remove-Item build/ -Recurse -Force
-            displayName: Reset build folder
-
-          - template: /eng/pipelines/templates/steps/ci.yml
-            parameters:
-              Artifacts: ${{ parameters.Artifacts }}
-              ServiceDirectory: ${{ parameters.ServiceDirectory }}
-              TestPipeline: ${{ parameters.TestPipeline }}
-              CtestRegex: ${{ parameters.CtestRegex }}
-              CoverageReportPath: ${{ parameters.CoverageReportPath }}
-          - template: /eng/pipelines/templates/steps/devops-variables-clear.yml
-            parameters:
-              Variables: ${{ configuration.Value }}
+        - template: /eng/pipelines/templates/steps/ci.yml
+          parameters:
+            Artifacts: ${{ parameters.Artifacts }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            TestPipeline: ${{ parameters.TestPipeline }}
+            CtestRegex: ${{ parameters.CtestRegex }}
+            CoverageReportPath: ${{ parameters.CoverageReportPath }}
+        - template: /eng/pipelines/templates/steps/devops-variables-clear.yml
+          parameters:
+            Variables: ${{ configuration.Value }}
 
 # Disable build for cpp - client
 - ${{ if ne(parameters.ServiceDirectory, 'not-specified' )}}:
