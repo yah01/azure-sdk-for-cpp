@@ -23,94 +23,94 @@ parameters:
   - name: Matrix
     type: object
     default:
-      Ubuntu18:
-        Pool: azsdk-pool-mms-ubuntu-1804-general
-        OSVmImage: MMSUbuntu18.04
-        BuildConfigurations:
-          Linux_x64_gcc5:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-            # Can't set CC and CXX to env because it would affect VCPKG building which requires g++ > 7
-            # So, this conf will set the CXX for cmake inline.
-            CmakeEnvArg: 'CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake'
-            BuildArgs: '-j 4'
-          Linux_x64_gcc8:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-            CC: '/usr/bin/gcc-8'
-            CXX: '/usr/bin/g++-8'
-            BuildArgs: '-j 10'
-          Linux_x64_gcc9:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-            CC: '/usr/bin/gcc-9'
-            CXX: '/usr/bin/g++-9'
-            BuildArgs: '-j 10'
-          Linux_x64:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-            BuildArgs: '-j 10'
-          Linux_x64_with_unit_test:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-            CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -DBUILD_CODE_COVERAGE=ON'
-            AptDependencies: 'gcovr lcov'
-            # Make coverage report to avoid running the test exe because CI step will run it
-            CODE_COVERAGE_COLLECT_ONLY: 1
-            BuildArgs: '-j 10'
-          Linux_x64_with_unit_test_release:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-            CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
-            BuildArgs: '-j 10'
-      Ubuntu20:
-        Pool: azsdk-pool-mms-ubuntu-2004-general
-        OSVmImage: MMSUbuntu20.04
-        BuildConfigurations:
-          Ubuntu_20_x64_clang:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-            CHECK_CLANG_FORMAT: 1
-            AptDependencies: 'clang-11'
-            CC: '/usr/bin/clang-11'
-            CXX: '/usr/bin/clang++-11'
-            BuildArgs: '-j 4'
-          Ubuntu20_x64_with_unit_test_release:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-            CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
-            BuildArgs: '-j 10'
-      Windows:
-        Pool: azsdk-pool-mms-win-2019-general
-        OSVmImage: MMS2019
-        BuildConfigurations:
-          Win_x86:
-            VcpkgInstall: 'curl[winssl] libxml2'
-            VCPKG_DEFAULT_TRIPLET: 'x86-windows-static'
-            CMAKE_GENERATOR: 'Visual Studio 16 2019'
-            CMAKE_GENERATOR_PLATFORM: Win32
-            CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON' #Leaving curl on here to explicitly test what the default behavior is on windows.
-            BuildArgs: '--parallel 8'
-          Win_x64:
-            VcpkgInstall: 'curl[winssl] libxml2'
-            VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
-            CMAKE_GENERATOR: 'Visual Studio 16 2019'
-            CMAKE_GENERATOR_PLATFORM: x64
-            BuildArgs: '--parallel 8'
-          Win_x86_with_unit_test:
-            VcpkgInstall: 'curl[winssl] libxml2'
-            VCPKG_DEFAULT_TRIPLET: 'x86-windows-static'
-            CMAKE_GENERATOR: 'Visual Studio 16 2019'
-            CMAKE_GENERATOR_PLATFORM: Win32
-            CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
-            BuildArgs: '--parallel 8'
-          Win_x64_with_unit_test:
-            VcpkgInstall: 'curl[winssl] libxml2'
-            VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
-            CMAKE_GENERATOR: 'Visual Studio 16 2019'
-            CMAKE_GENERATOR_PLATFORM: x64
-            CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
-            BuildArgs: '--parallel 8'
+      # Ubuntu18:
+      #   Pool: azsdk-pool-mms-ubuntu-1804-general
+      #   OSVmImage: MMSUbuntu18.04
+      #   BuildConfigurations:
+      #     Linux_x64_gcc5:
+      #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
+      #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+      #       # Can't set CC and CXX to env because it would affect VCPKG building which requires g++ > 7
+      #       # So, this conf will set the CXX for cmake inline.
+      #       CmakeEnvArg: 'CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake'
+      #       BuildArgs: '-j 4'
+      #     Linux_x64_gcc8:
+      #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
+      #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+      #       CC: '/usr/bin/gcc-8'
+      #       CXX: '/usr/bin/g++-8'
+      #       BuildArgs: '-j 10'
+      #     Linux_x64_gcc9:
+      #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
+      #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+      #       CC: '/usr/bin/gcc-9'
+      #       CXX: '/usr/bin/g++-9'
+      #       BuildArgs: '-j 10'
+      #     Linux_x64:
+      #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
+      #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+      #       BuildArgs: '-j 10'
+      #     Linux_x64_with_unit_test:
+      #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
+      #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+      #       CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -DBUILD_CODE_COVERAGE=ON'
+      #       AptDependencies: 'gcovr lcov'
+      #       # Make coverage report to avoid running the test exe because CI step will run it
+      #       CODE_COVERAGE_COLLECT_ONLY: 1
+      #       BuildArgs: '-j 10'
+      #     Linux_x64_with_unit_test_release:
+      #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
+      #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+      #       CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
+      #       BuildArgs: '-j 10'
+      # Ubuntu20:
+      #   Pool: azsdk-pool-mms-ubuntu-2004-general
+      #   OSVmImage: MMSUbuntu20.04
+      #   BuildConfigurations:
+      #     Ubuntu_20_x64_clang:
+      #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
+      #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+      #       CHECK_CLANG_FORMAT: 1
+      #       AptDependencies: 'clang-11'
+      #       CC: '/usr/bin/clang-11'
+      #       CXX: '/usr/bin/clang++-11'
+      #       BuildArgs: '-j 4'
+      #     Ubuntu20_x64_with_unit_test_release:
+      #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
+      #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+      #       CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
+      #       BuildArgs: '-j 10'
+      # Windows:
+      #   Pool: azsdk-pool-mms-win-2019-general
+      #   OSVmImage: MMS2019
+      #   BuildConfigurations:
+      #     Win_x86:
+      #       VcpkgInstall: 'curl[winssl] libxml2'
+      #       VCPKG_DEFAULT_TRIPLET: 'x86-windows-static'
+      #       CMAKE_GENERATOR: 'Visual Studio 16 2019'
+      #       CMAKE_GENERATOR_PLATFORM: Win32
+      #       CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON' #Leaving curl on here to explicitly test what the default behavior is on windows.
+      #       BuildArgs: '--parallel 8'
+      #     Win_x64:
+      #       VcpkgInstall: 'curl[winssl] libxml2'
+      #       VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
+      #       CMAKE_GENERATOR: 'Visual Studio 16 2019'
+      #       CMAKE_GENERATOR_PLATFORM: x64
+      #       BuildArgs: '--parallel 8'
+      #     Win_x86_with_unit_test:
+      #       VcpkgInstall: 'curl[winssl] libxml2'
+      #       VCPKG_DEFAULT_TRIPLET: 'x86-windows-static'
+      #       CMAKE_GENERATOR: 'Visual Studio 16 2019'
+      #       CMAKE_GENERATOR_PLATFORM: Win32
+      #       CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
+      #       BuildArgs: '--parallel 8'
+      #     Win_x64_with_unit_test:
+      #       VcpkgInstall: 'curl[winssl] libxml2'
+      #       VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
+      #       CMAKE_GENERATOR: 'Visual Studio 16 2019'
+      #       CMAKE_GENERATOR_PLATFORM: x64
+      #       CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
+      #       BuildArgs: '--parallel 8'
       MacOS_1014:
         Pool: Azure Pipelines
         OsVmImage: macOS-10.14
