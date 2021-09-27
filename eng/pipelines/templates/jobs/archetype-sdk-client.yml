@@ -151,14 +151,58 @@ jobs:
       value: ${{ machine.Value.OsVmImage }}
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+        parameters:
+          AgentImage: $(OSVmImage)
+      # Add g++5 repo to ubuntu
+      - bash: sudo sh -c "echo 'deb http://ftp.debian.org/debian/ stretch main' >> /etc/apt/sources.list"
+        displayName: Add g++ 5
+        condition: >-
+          and(
+            succeeded(),
+            contains(variables['OSVmImage'], 'Ubuntu'),
+            contains(variables['CmakeEnvArg'], 'CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake')
+          )
+
+      # Install g++5
+      - bash: sudo apt-get update & sudo apt-get install g++-5
+        displayName: Install g++ 5
+        condition: >-
+          and(
+            succeeded(),
+            contains(variables['OSVmImage'], 'Ubuntu'),
+            contains(variables['CmakeEnvArg'], 'CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake')
+          )
+
+      # Install gcc and g++ 8 if it is needed on the image.
+      - bash: sudo apt-get install gcc-8 g++-8 -y
+        displayName: Install gcc and g++ 8
+        condition: >-
+          and(
+            succeeded(),
+            contains(variables['OSVmImage'], 'Ubuntu'),
+            contains(variables['CC'], 'gcc-8'),
+            contains(variables['CXX'], 'g++-8')
+          )
+
+      # Install apt dependencies (if appropriate)
+      - bash: sudo apt install -y $(AptDependencies)
+        condition: and(succeededOrFailed(), ne(variables['AptDependencies'], ''))
+        displayName: Install dependencies from apt
+
+      - script: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
+        displayName: Install coverage tools
+        # CODE_COVERAGE variable is '' (do-not-generate) in all matrix but linux-gcc
+        # It is 'enabled' by default on linux-gcc but it can be opt-out by each pipeline (disabled)
+        condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], 'disabled'), ne(variables['CODE_COVERAGE'], ''))
+
+
       - ${{ each configuration in machine.Value.BuildConfigurations }}:
         - template: /eng/pipelines/templates/steps/devops-variables-set.yml
           parameters:
             Variables: ${{ configuration.Value }}
-        # TODO: Refactor
-        - pwsh: |
-            Remove-Item build/ -Recurse -Force -ErrorAction Ignore
-          displayName: Reset build folder
         - template: /eng/pipelines/templates/steps/ci.yml
           parameters:
             Artifacts: ${{ parameters.Artifacts }}
@@ -166,6 +210,10 @@ jobs:
             TestPipeline: ${{ parameters.TestPipeline }}
             CtestRegex: ${{ parameters.CtestRegex }}
             CoverageReportPath: ${{ parameters.CoverageReportPath }}
+        - pwsh: |
+            git clean -xdf
+            Remove-Item $(Agent.TempDirectory)/vcpkg -Recurse -Force -ErrorAction Ignore
+          displayName: Between-build cleanup
         - template: /eng/pipelines/templates/steps/devops-variables-clear.yml
           parameters:
             Variables: ${{ configuration.Value }}

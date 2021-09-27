@@ -16,41 +16,6 @@ parameters:
     default: 'sdk/*/*/*cov_xml.xml'
 
 steps:
-  - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
-    parameters:
-      AgentImage: $(OSVmImage)
-
-  # Add g++5 repo to ubuntu
-  - bash: sudo sh -c "echo 'deb http://ftp.debian.org/debian/ stretch main' >> /etc/apt/sources.list"
-    displayName: Add g++ 5
-    condition: >-
-      and(
-        succeeded(),
-        contains(variables['OSVmImage'], 'Ubuntu'), 
-        contains(variables['CmakeEnvArg'], 'CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake')
-      )
-
-  # Install g++5
-  - bash: sudo apt-get update & sudo apt-get install g++-5
-    displayName: Install g++ 5
-    condition: >-
-      and(
-        succeeded(), 
-        contains(variables['OSVmImage'], 'Ubuntu'),
-        contains(variables['CmakeEnvArg'], 'CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake')
-      )
-
-  # Install gcc and g++ 8 if it is needed on the image.
-  - bash: sudo apt-get install gcc-8 g++-8 -y
-    displayName: Install gcc and g++ 8
-    condition: >-
-      and(
-        succeeded(),
-        contains(variables['OSVmImage'], 'Ubuntu'), 
-        contains(variables['CC'], 'gcc-8'),
-        contains(variables['CXX'], 'g++-8')
-      )
-
   # Validate all the files are formatted correctly according to the
   # .clang-format file. This step runs on linux only only and assumes that
   # clang-format-11 is installed.
