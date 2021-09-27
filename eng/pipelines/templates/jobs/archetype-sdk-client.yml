@@ -63,23 +63,23 @@ parameters:
       #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
       #       CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
       #       BuildArgs: '-j 10'
-      # Ubuntu20:
-      #   Pool: azsdk-pool-mms-ubuntu-2004-general
-      #   OSVmImage: MMSUbuntu20.04
-      #   BuildConfigurations:
-      #     Ubuntu_20_x64_clang:
-      #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
-      #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-      #       CHECK_CLANG_FORMAT: 1
-      #       AptDependencies: 'clang-11'
-      #       CC: '/usr/bin/clang-11'
-      #       CXX: '/usr/bin/clang++-11'
-      #       BuildArgs: '-j 4'
-      #     Ubuntu20_x64_with_unit_test_release:
-      #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
-      #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-      #       CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
-      #       BuildArgs: '-j 10'
+      Ubuntu20:
+        Pool: azsdk-pool-mms-ubuntu-2004-general
+        OSVmImage: MMSUbuntu20.04
+        BuildConfigurations:
+          Ubuntu_20_x64_clang:
+            VcpkgInstall: 'curl[ssl] libxml2 openssl'
+            VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+            CHECK_CLANG_FORMAT: 1
+            AptDependencies: 'clang-11'
+            CC: '/usr/bin/clang-11'
+            CXX: '/usr/bin/clang++-11'
+            BuildArgs: '-j 4'
+          Ubuntu20_x64_with_unit_test_release:
+            VcpkgInstall: 'curl[ssl] libxml2 openssl'
+            VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+            CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
+            BuildArgs: '-j 10'
       # Windows:
       #   Pool: azsdk-pool-mms-win-2019-general
       #   OSVmImage: MMS2019
@@ -159,7 +159,6 @@ jobs:
         - pwsh: |
             Remove-Item build/ -Recurse -Force -ErrorAction Ignore
           displayName: Reset build folder
-        - pwsh:
         - template: /eng/pipelines/templates/steps/ci.yml
           parameters:
             Artifacts: ${{ parameters.Artifacts }}
