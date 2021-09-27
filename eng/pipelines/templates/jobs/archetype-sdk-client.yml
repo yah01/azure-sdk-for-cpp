@@ -157,7 +157,7 @@ jobs:
             Variables: ${{ configuration.Value }}
         # TODO: Refactor
         - pwsh: |
-            Remove-Item build/ -Recurse -Force
+            Remove-Item build/ -Recurse -Force -ErrorAction Ignore
           displayName: Reset build folder
 
         - template: /eng/pipelines/templates/steps/ci.yml
