@@ -16,9 +16,6 @@ parameters:
     default: 'sdk/*/*/*cov_xml.xml'
 
 steps:
-  - checkout: self
-    submodules: recursive
-
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:
       AgentImage: $(OSVmImage)
