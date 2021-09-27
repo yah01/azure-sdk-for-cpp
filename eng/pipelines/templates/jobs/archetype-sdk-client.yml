@@ -55,7 +55,6 @@ parameters:
             VCPKG_DEFAULT_TRIPLET: 'x64-linux'
             CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -DBUILD_CODE_COVERAGE=ON'
             AptDependencies: 'gcovr lcov'
-            CODE_COVERAGE: '${{ parameters.Coverage }}'
             # Make coverage report to avoid running the test exe because CI step will run it
             CODE_COVERAGE_COLLECT_ONLY: 1
             BuildArgs: '-j 10'
@@ -150,6 +149,8 @@ jobs:
         value: ""
       - name: AZURE_TEST_MODE
         value: "PLAYBACK"
+      - name: CODE_COVERAGE
+        value: "${{ parameters.Coverage }}"
       # Compatibility with the old build architecture
       # TODO: Eliminate this and use template logic to shorten the number of
       # steps instead.
