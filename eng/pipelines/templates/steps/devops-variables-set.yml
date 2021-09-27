@@ -9,7 +9,9 @@ parameters:
 steps:
   # TODO: Refactor to eng/common script
   - pwsh: |
-      $rawVariables = "${{ convertToJson(parameters.Variables) }}"
+      $rawVariables = @"
+        ${{ convertToJson(parameters.Variables) }}
+      "@
       $variables = ConvertFrom-Json $rawVariables
       foreach ($key in $variables.Keys) {
         $value = $variable[$key]
