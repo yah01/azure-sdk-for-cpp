@@ -1,10 +1,10 @@
 parameters:
-  - Variables:
-    type: object
-    default: []
-  - ContinueOnError:
-    type: boolean
-    default: false
+- name: Variables
+  type: object
+  default: []
+- name: ContinueOnError
+  type: boolean
+  default: false
 
 steps:
   # TODO: Refactor to eng/common script

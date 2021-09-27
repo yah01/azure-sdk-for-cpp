@@ -1,8 +1,8 @@
 parameters:
-  - Variables:
+  - name: Variables
     type: object
     default: []
-  - ContinueOnError:
+  - name: ContinueOnError
     type: boolean
     default: false
 
