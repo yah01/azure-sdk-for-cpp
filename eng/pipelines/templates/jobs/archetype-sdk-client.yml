@@ -148,7 +148,7 @@ jobs:
       ${{ if eq(null, parameters.Coverage )}}:
         value: null
       ${{ if ne(null, parameters.Coverage )}}:
-      value: "${{ parameters.Coverage }}"
+        value: "${{ parameters.Coverage }}"
     # Compatibility with the old build architecture
     # TODO: Eliminate this and use template logic to shorten the number of
     # steps instead.
