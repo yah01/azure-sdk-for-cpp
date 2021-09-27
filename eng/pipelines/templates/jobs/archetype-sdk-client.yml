@@ -148,7 +148,7 @@ jobs:
     # TODO: Eliminate this and use template logic to shorten the number of
     # steps instead.
     - name: OSVmImage
-      value: ${{ parameters.Value.OsVmImage }}
+      value: ${{ machine.Value.OsVmImage }}
 
     steps:
       - ${{ each configuration in machine.Value.BuildConfigurations }}:
@@ -159,7 +159,7 @@ jobs:
         - pwsh: |
             Remove-Item build/ -Recurse -Force -ErrorAction Ignore
           displayName: Reset build folder
-
+        - pwsh:
         - template: /eng/pipelines/templates/steps/ci.yml
           parameters:
             Artifacts: ${{ parameters.Artifacts }}
