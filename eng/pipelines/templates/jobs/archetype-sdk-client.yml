@@ -23,10 +23,10 @@ parameters:
   - name: Matrix
     type: object
     default:
-      # Ubuntu18:
-      #   Pool: azsdk-pool-mms-ubuntu-1804-general
-      #   OSVmImage: MMSUbuntu18.04
-      #   BuildConfigurations:
+      Ubuntu18:
+        Pool: azsdk-pool-mms-ubuntu-1804-general
+        OSVmImage: MMSUbuntu18.04
+        BuildConfigurations:
       #     Linux_x64_gcc5:
       #       AptDependencies: g++-5
       #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
@@ -52,14 +52,14 @@ parameters:
       #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
       #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
       #       BuildArgs: '-j 10'
-      #     Linux_x64_with_unit_test:
-      #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
-      #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-      #       CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -DBUILD_CODE_COVERAGE=ON'
-      #       AptDependencies: 'gcovr lcov'
-      #       # Make coverage report to avoid running the test exe because CI step will run it
-      #       CODE_COVERAGE_COLLECT_ONLY: 1
-      #       BuildArgs: '-j 10'
+          Linux_x64_with_unit_test:
+            VcpkgInstall: 'curl[ssl] libxml2 openssl'
+            VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+            CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -DBUILD_CODE_COVERAGE=ON'
+            AptDependencies: 'gcovr lcov'
+            # Make coverage report to avoid running the test exe because CI step will run it
+            CODE_COVERAGE_COLLECT_ONLY: 1
+            BuildArgs: '-j 10'
       #     Linux_x64_with_unit_test_release:
       #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
       #       VCPKG_DEFAULT_TRIPLET: 'x64-linux'
@@ -177,7 +177,6 @@ jobs:
         # CODE_COVERAGE variable is '' (do-not-generate) in all matrix but linux-gcc
         # It is 'enabled' by default on linux-gcc but it can be opt-out by each pipeline (disabled)
         condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], 'disabled'), ne(variables['CODE_COVERAGE'], ''))
-
 
       - ${{ each configuration in machine.Value.BuildConfigurations }}:
         - template: /eng/pipelines/templates/steps/devops-variables-set.yml
