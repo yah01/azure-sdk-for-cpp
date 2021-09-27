@@ -12,7 +12,7 @@ steps:
       $rawVariables = @"
         ${{ convertToJson(parameters.Variables) }}
       "@
-      $variables = ConvertFrom-Json $rawVariables
+      $variables = ConvertFrom-Json $rawVariables -AsHashtable
       foreach ($key in $variables.Keys) {
         Write-Host "Clearing: $key"
         Write-Host "##vso[task.setvariable variable=$key]"
