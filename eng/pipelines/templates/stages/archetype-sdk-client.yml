@@ -6,7 +6,7 @@ parameters:
   type: string
   default: .*
 - name: CoverageEnabled
-  type: bool
+  type: boolean
   default: true
 - name: LiveTestCtestRegex
   type: string
