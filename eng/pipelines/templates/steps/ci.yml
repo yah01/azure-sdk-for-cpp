@@ -14,6 +14,9 @@ parameters:
   - name: CoverageReportPath
     type: string
     default: 'sdk/*/*/*cov_xml.xml'
+  - name: CoverageEnabled
+    type: boolean
+    default: true
 
 steps:
   # Validate all the files are formatted correctly according to the
@@ -62,18 +65,19 @@ steps:
     workingDirectory: build
     displayName: ctest
 
-  # Make coverage targets (specified in coverage_targets.txt) and assemble
-  # coverage report
-  - bash: |
-      make `cat ${{ parameters.ServiceDirectory }}-targets-coverage.txt`
-      ../tools/reportgenerator "-reports:${{ parameters.CoverageReportPath }}" "-targetdir:." "-reporttypes:Cobertura"
-    workingDirectory: build
-    displayName: Generate Code Coverage Data
-    condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], 'disabled'), ne(variables['CODE_COVERAGE'], ''))
+  - ${{ if eq(parameters.CoverageEnabled, true) }}:
+    # Make coverage targets (specified in coverage_targets.txt) and assemble
+    # coverage report
+    - bash: |
+        make `cat ${{ parameters.ServiceDirectory }}-targets-coverage.txt`
+        ../tools/reportgenerator "-reports:${{ parameters.CoverageReportPath }}" "-targetdir:." "-reporttypes:Cobertura"
+      workingDirectory: build
+      displayName: Generate Code Coverage Data
+      condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], ''))
 
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: Cobertura
-      summaryFileLocation: '$(Build.SourcesDirectory)/**/Cobertura.xml'
-    displayName: Publish Code Coverage to DevOps
-    condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], 'disabled'), ne(variables['CODE_COVERAGE'], ''))
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '$(Build.SourcesDirectory)/**/Cobertura.xml'
+      displayName: Publish Code Coverage to DevOps
+      condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], ''))

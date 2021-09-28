@@ -8,9 +8,9 @@ parameters:
   - name: TestPipeline
     type: boolean
     default: false
-  - name: Coverage
-    type: string
-    default: ''
+  - name: CoverageEnabled
+    type: boolean
+    default: true
   - name: CtestRegex
     type: string
     default: .*
@@ -59,6 +59,7 @@ parameters:
             AptDependencies: 'gcovr lcov'
             # Make coverage report to avoid running the test exe because CI step will run it
             CODE_COVERAGE_COLLECT_ONLY: 1
+            CODE_COVERAGE: true
             BuildArgs: '-j 10'
       #     Linux_x64_with_unit_test_release:
       #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
@@ -180,13 +181,14 @@ jobs:
         condition: and(succeededOrFailed(), ne(variables['AptDependencies'], ''))
         displayName: Install dependencies from apt
 
-      - script: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool
-          dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
-        displayName: Install coverage tools
-        # CODE_COVERAGE variable is '' (do-not-generate) in all matrix but linux-gcc
-        # It is 'enabled' by default on linux-gcc but it can be opt-out by each pipeline (disabled)
-        condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], 'disabled'), ne(variables['CODE_COVERAGE'], ''))
+      - ${{ if eq(parameters.CoverageEnabled, true) }}:
+        - script: |
+            dotnet tool install -g dotnet-reportgenerator-globaltool
+            dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
+          displayName: Install coverage tools
+          # CODE_COVERAGE variable is '' (do-not-generate) in all matrix but linux-gcc
+          # It is 'enabled' by default on linux-gcc but it can be opt-out by each pipeline (disabled)
+          condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], ''))
 
       - ${{ each configuration in machine.Value.BuildConfigurations }}:
         - template: /eng/pipelines/templates/steps/devops-variables-set.yml
@@ -199,6 +201,7 @@ jobs:
             TestPipeline: ${{ parameters.TestPipeline }}
             CtestRegex: ${{ parameters.CtestRegex }}
             CoverageReportPath: ${{ parameters.CoverageReportPath }}
+            CoverageEnabled: ${{ parameters.CoverageEnabled }}
         - pwsh: |
             git clean -xdf
             Remove-Item $(Agent.TempDirectory)/vcpkg -Recurse -Force -ErrorAction Ignore
