@@ -69,6 +69,10 @@ steps:
     # Make coverage targets (specified in coverage_targets.txt) and assemble
     # coverage report
     - bash: |
+        ls *.txt
+        echo "cat ${{ parameters.ServiceDirectory }}-targets-coverage.txt"
+        cat ${{ parameters.ServiceDirectory }}-targets-coverage.txt
+        echo "=============="
         make `cat ${{ parameters.ServiceDirectory }}-targets-coverage.txt`
         ../tools/reportgenerator "-reports:${{ parameters.CoverageReportPath }}" "-targetdir:." "-reporttypes:Cobertura"
       workingDirectory: build

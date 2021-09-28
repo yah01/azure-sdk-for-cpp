@@ -59,7 +59,7 @@ parameters:
             AptDependencies: 'gcovr lcov'
             # Make coverage report to avoid running the test exe because CI step will run it
             CODE_COVERAGE_COLLECT_ONLY: 1
-            CODE_COVERAGE: true
+            CODE_COVERAGE: enabled
             BuildArgs: '-j 10'
       #     Linux_x64_with_unit_test_release:
       #       VcpkgInstall: 'curl[ssl] libxml2 openssl'
@@ -186,8 +186,6 @@ jobs:
             dotnet tool install -g dotnet-reportgenerator-globaltool
             dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
           displayName: Install coverage tools
-          # CODE_COVERAGE variable is '' (do-not-generate) in all matrix but linux-gcc
-          # It is 'enabled' by default on linux-gcc but it can be opt-out by each pipeline (disabled)
 
       - ${{ each configuration in machine.Value.BuildConfigurations }}:
         - template: /eng/pipelines/templates/steps/devops-variables-set.yml
