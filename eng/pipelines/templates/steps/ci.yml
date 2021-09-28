@@ -73,6 +73,9 @@ steps:
         echo "cat ${{ parameters.ServiceDirectory }}-targets-coverage.txt"
         cat ${{ parameters.ServiceDirectory }}-targets-coverage.txt
         echo "=============="
+        cat Makefile
+        echo "=============="
+
         make `cat ${{ parameters.ServiceDirectory }}-targets-coverage.txt`
         ../tools/reportgenerator "-reports:${{ parameters.CoverageReportPath }}" "-targetdir:." "-reporttypes:Cobertura"
       workingDirectory: build
