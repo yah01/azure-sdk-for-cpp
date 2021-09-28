@@ -188,7 +188,6 @@ jobs:
           displayName: Install coverage tools
           # CODE_COVERAGE variable is '' (do-not-generate) in all matrix but linux-gcc
           # It is 'enabled' by default on linux-gcc but it can be opt-out by each pipeline (disabled)
-          condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], ''))
 
       - ${{ each configuration in machine.Value.BuildConfigurations }}:
         - template: /eng/pipelines/templates/steps/devops-variables-set.yml
