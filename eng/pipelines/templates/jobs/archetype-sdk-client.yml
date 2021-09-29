@@ -282,9 +282,12 @@ jobs:
             CtestRegex: ${{ parameters.CtestRegex }}
             CoverageReportPath: ${{ parameters.CoverageReportPath }}
             CoverageEnabled: ${{ parameters.CoverageEnabled }}
+
         - pwsh: |
             git clean -xdf
+            Remove-Item build -Recurse -Force
           displayName: Between-build cleanup
+
         - template: /eng/pipelines/templates/steps/devops-variables-clear.yml
           parameters:
             Variables: ${{ configuration.Value }}
