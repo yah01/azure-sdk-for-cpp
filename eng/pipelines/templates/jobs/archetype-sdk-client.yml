@@ -233,7 +233,6 @@ jobs:
             ne(variables['VcpkgRestoredFromCache'], true)
           )
 
-
       - ${{ if eq(parameters.CoverageEnabled, true) }}:
         - script: |
             dotnet tool install -g dotnet-reportgenerator-globaltool
@@ -244,7 +243,9 @@ jobs:
         - template: /eng/pipelines/templates/steps/devops-variables-set.yml
           parameters:
             Variables: ${{ configuration.Value }}
-        - ${{ if ne(configuration.VcpkgInstall, '') }}:
+        # TODO: Consider VcpkgInstall should be a property in itself,
+        # variables should be nested further?
+        - ${{ if ne(configuration.Value.VcpkgInstall, '') }}:
           - pwsh: |
               if ($IsWindows) {
                 .\vcpkg.exe install $(VcpkgInstall)
