@@ -253,6 +253,9 @@ jobs:
                 ./vcpkg install $(VcpkgInstall)
               }
             displayName: vcpkg install
+            # TODO: Use a variable?
+            workingDirectory: $(Agent.TempDirectory)/vcpkg
+
         - template: /eng/pipelines/templates/steps/ci.yml
           parameters:
             Artifacts: ${{ parameters.Artifacts }}
