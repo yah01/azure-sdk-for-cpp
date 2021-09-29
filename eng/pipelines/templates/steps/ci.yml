@@ -65,9 +65,7 @@ steps:
     # Make coverage targets (specified in coverage_targets.txt) and assemble
     # coverage report
     - bash: |
-        echo "make..."
         make VERBOSE=1 `cat ${{ parameters.ServiceDirectory }}-targets-coverage.txt`
-        echo "=======================\nreportgenerator..."
         ../tools/reportgenerator "-reports:${{ parameters.CoverageReportPath }}" "-targetdir:." "-reporttypes:Cobertura"
       workingDirectory: build
       displayName: Generate Code Coverage Data
