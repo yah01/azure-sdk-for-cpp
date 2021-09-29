@@ -231,7 +231,7 @@ jobs:
 
         # TODO: Consider AptDependencies should be a property in itself,
         # variables should be nested further?
-        - ${{ if ne(configuration.Value.AptDependencies) }}:
+        - ${{ if ne(configuration.Value.AptDependencies, '') }}:
           # Add g++5 repo to ubuntu
           - bash: sudo sh -c "echo 'deb http://ftp.debian.org/debian/ stretch main' >> /etc/apt/sources.list"
             displayName: Add g++ 5 repo
