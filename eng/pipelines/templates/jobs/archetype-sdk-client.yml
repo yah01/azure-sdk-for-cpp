@@ -166,21 +166,6 @@ jobs:
         parameters:
           AgentImage: $(OSVmImage)
 
-      # Add g++5 repo to ubuntu
-      - bash: sudo sh -c "echo 'deb http://ftp.debian.org/debian/ stretch main' >> /etc/apt/sources.list"
-        displayName: Add g++ 5 repo
-        condition: >-
-          and(
-            succeeded(),
-            contains(variables['OSVmImage'], 'Ubuntu'),
-            contains(variables['AptDependencies'], 'g++-5')
-          )
-
-      # Install apt dependencies (if appropriate)
-      - bash: sudo apt update && sudo apt install -y $(AptDependencies)
-        condition: and(succeededOrFailed(), ne(variables['AptDependencies'], ''))
-        displayName: Install dependencies from apt
-
       - pwsh: |
           $TargetPath = "$(Agent.TempDirectory)/vcpkg"
           Remove-Item -Path $TargetPath -Recurse -Force -ErrorAction Ignore
@@ -243,6 +228,26 @@ jobs:
         - template: /eng/pipelines/templates/steps/devops-variables-set.yml
           parameters:
             Variables: ${{ configuration.Value }}
+
+        # TODO: Consider AptDependencies should be a property in itself,
+        # variables should be nested further?
+        - ${{ if ne(configuration.Value.AptDependencies) }}:
+          # Add g++5 repo to ubuntu
+          - bash: sudo sh -c "echo 'deb http://ftp.debian.org/debian/ stretch main' >> /etc/apt/sources.list"
+            displayName: Add g++ 5 repo
+            condition: >-
+              and(
+                succeeded(),
+                contains(variables['OSVmImage'], 'Ubuntu'),
+                contains(variables['AptDependencies'], 'g++-5')
+              )
+
+          # Install apt dependencies (if appropriate)
+          - bash: sudo apt update && sudo apt install -y $(AptDependencies)
+            condition: and(succeededOrFailed(), ne(variables['AptDependencies'], ''))
+            displayName: Install dependencies from apt
+
+
         # TODO: Consider VcpkgInstall should be a property in itself,
         # variables should be nested further?
         - ${{ if ne(configuration.Value.VcpkgInstall, '') }}:
