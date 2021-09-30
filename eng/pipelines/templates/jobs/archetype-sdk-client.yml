@@ -286,7 +286,7 @@ jobs:
         - pwsh: |
             git clean -xdf
             Remove-Item build -Recurse -Force
-            Get-ChildItem -Path build -Recurse
+            Get-ChildItem -Path build -Recurse -ErrorAction Ignore
           displayName: Between-build cleanup
 
         - template: /eng/pipelines/templates/steps/devops-variables-clear.yml
