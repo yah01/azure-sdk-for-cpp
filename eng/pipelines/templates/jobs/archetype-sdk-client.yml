@@ -239,23 +239,23 @@ jobs:
         # TODO: Consider AptDependencies should be a property in itself,
         # variables should be nested further?
         - ${{ if ne(configuration.Value.AptDependencies, '') }}:
-          # Add g++5 repo to ubuntu
-          - pwsh: |
-              if (!$isLinux) {
-                Write-Host "Non-Linux system. Exiting."
-                exit 0
-              }
-              $source = 'deb http://ftp.debian.org/debian/ stretch main'
-              $sourceListFile = '/etc/apt/sources.list'
-              $sourceList = Get-Content $sourceListFile
-              if (!$sourceList.Where({ $_ -eq $sourceList })) {
-                Write-Host "Adding $source to /etc/apt/sources.list"
-                sudo sh -c "echo '$source' >> $sourceListFile"
-              }
-              cat $sourceListFile
-            displayName: Add g++ 5 repo
-            condition: >-
-              and(succeeded(), contains(variables['AptDependencies'], 'g++-5'))
+        #   # Add g++5 repo to ubuntu
+        #   - pwsh: |
+        #       if (!$isLinux) {
+        #         Write-Host "Non-Linux system. Exiting."
+        #         exit 0
+        #       }
+        #       $source = 'deb http://ftp.debian.org/debian/ stretch main'
+        #       $sourceListFile = '/etc/apt/sources.list'
+        #       $sourceList = Get-Content $sourceListFile
+        #       if (!$sourceList.Where({ $_ -eq $sourceList })) {
+        #         Write-Host "Adding $source to /etc/apt/sources.list"
+        #         sudo sh -c "echo '$source' >> $sourceListFile"
+        #       }
+        #       cat $sourceListFile
+        #     displayName: Add g++ 5 repo
+        #     condition: >-
+        #       and(succeeded(), contains(variables['AptDependencies'], 'g++-5'))
 
           # Install apt dependencies (if appropriate)
           - pwsh: sudo apt update && sudo apt install -y $(AptDependencies)
