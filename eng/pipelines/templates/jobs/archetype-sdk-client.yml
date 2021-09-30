@@ -250,8 +250,9 @@ jobs:
               $sourceList = Get-Content $sourceListFile
               if (!$sourceList.Where({ $_ -eq $sourceList })) {
                 Write-Host "Adding $source to /etc/apt/sources.list"
-                sudo sh -c "echo $source >> $sourceListFile"
+                sudo sh -c "echo '$source' >> $sourceListFile"
               }
+              cat $sourceListFile
             displayName: Add g++ 5 repo
             condition: >-
               and(succeeded(), contains(variables['AptDependencies'], 'g++-5'))
