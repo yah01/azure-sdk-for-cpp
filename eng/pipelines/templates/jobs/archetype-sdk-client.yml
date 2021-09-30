@@ -285,7 +285,7 @@ jobs:
 
         - pwsh: |
             git clean -xdf
-            Remove-Item build -Recurse -Force
+            Remove-Item build -Recurse -Force -ErrorAction Ignore
             Get-ChildItem -Path build -Recurse -ErrorAction Ignore
           displayName: Between-build cleanup
 
