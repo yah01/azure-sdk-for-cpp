@@ -225,12 +225,6 @@ jobs:
             ne(variables['VcpkgRestoredFromCache'], true)
           )
 
-      - ${{ if eq(parameters.CoverageEnabled, true) }}:
-        - script: |
-            dotnet tool install -g dotnet-reportgenerator-globaltool
-            dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
-          displayName: Install coverage tools
-
       - ${{ each configuration in machine.Value.BuildConfigurations }}:
         - template: /eng/pipelines/templates/steps/devops-variables-set.yml
           parameters:

@@ -62,6 +62,17 @@ steps:
     displayName: ctest
 
   - ${{ if eq(parameters.CoverageEnabled, true) }}:
+    - pwsh: |
+        if (Test-Path $(ToolsDirectory)/reportgenerator) {
+          Write-Host "Report generator already installed, skipping"
+          exit 0
+        }
+        $toolsDirectory = "$(Agent.TempDirectory)/coveragetools"
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+        dotnet tool install dotnet-reportgenerator-globaltool --tool-path $toolsDirectory
+        Write-Host "##vso[task.setvariable variable=ToolsDirectory]$toolsDirectory"
+      displayName: Install coverage tools
+
     # Make coverage targets (specified in coverage_targets.txt) and assemble
     # coverage report
     - bash: |
