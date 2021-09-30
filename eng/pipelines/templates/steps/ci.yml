@@ -74,7 +74,7 @@ steps:
     # coverage report
     - bash: |
         make VERBOSE=1 `cat ${{ parameters.ServiceDirectory }}-targets-coverage.txt`
-        ../tools/reportgenerator "-reports:${{ parameters.CoverageReportPath }}" "-targetdir:." "-reporttypes:Cobertura"
+        $(ToolsDirectory)/reportgenerator "-reports:${{ parameters.CoverageReportPath }}" "-targetdir:." "-reporttypes:Cobertura"
       workingDirectory: build
       displayName: Generate Code Coverage Data
       condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], ''))
