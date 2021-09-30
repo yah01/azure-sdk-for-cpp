@@ -250,7 +250,7 @@ jobs:
               $sourceList = Get-Content $sourceListFile
               if (!$sourceList.Where({ $_ -eq $sourceList })) {
                 Write-Host "Adding $source to /etc/apt/sources.list"
-                sudo echo $source >> $sourceListFile
+                sudo sh -c "echo $source >> $sourceListFile"
               }
             displayName: Add g++ 5 repo
             condition: >-
