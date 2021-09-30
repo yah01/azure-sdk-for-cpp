@@ -119,7 +119,7 @@ parameters:
             VCPKG_DEFAULT_TRIPLET: 'arm64-windows'
             CMAKE_GENERATOR: 'Visual Studio 16 2019'
             CMAKE_GENERATOR_PLATFORM: arm64
-            CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
+            CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
             BuildArgs: '--parallel 8'
       MacOS_1014:
         Pool: Azure Pipelines
