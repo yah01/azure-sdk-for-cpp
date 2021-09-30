@@ -68,7 +68,7 @@ steps:
         dotnet tool install dotnet-reportgenerator-globaltool --tool-path $toolsDirectory
         Write-Host "##vso[task.setvariable variable=ToolsDirectory]$toolsDirectory"
       displayName: Install coverage tools
-      condition: and(succeeded(), ne(variables['ToolsDirectory'], ''))
+      condition: and(succeeded(), eq(variables['ToolsDirectory'], ''))
 
     # Make coverage targets (specified in coverage_targets.txt) and assemble
     # coverage report
