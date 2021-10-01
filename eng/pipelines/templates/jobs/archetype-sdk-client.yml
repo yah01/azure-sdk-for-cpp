@@ -228,7 +228,7 @@ parameters:
         OsVmImage: macOS-10.15
         BuildConfigurations:
           MacOS_x64_with_unit_test:
-            VcpkgInstall: 'curl[ssl] openssl'
+            VcpkgInstall: 'curl[ssl] libxml2 openssl'
             VCPKG_DEFAULT_TRIPLET: 'x64-osx'
             CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
             BuildArgs: '-j 4'
