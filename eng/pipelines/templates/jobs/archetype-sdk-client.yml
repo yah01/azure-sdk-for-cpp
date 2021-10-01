@@ -208,7 +208,7 @@ parameters:
             CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON'
             BuildArgs: '--parallel 8'
 
-      MacOS_1014:
+      MacOS1014:
         Pool: Azure Pipelines
         OsVmImage: macOS-10.14
         BuildConfigurations:
@@ -223,7 +223,16 @@ parameters:
             CMAKE_BUILD_TYPE: Release
             CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON'
             BuildArgs: '-j 4'
-      MacOS_11:
+      MacOS1015:
+        Pool: Azure Pipelines
+        OsVmImage: macOS-10.15
+        BuildConfigurations:
+          MacOS_x64_with_unit_test:
+            VcpkgInstall: 'curl[ssl] openssl'
+            VCPKG_DEFAULT_TRIPLET: 'x64-osx'
+            CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
+            BuildArgs: '-j 4'
+      MacOS11:
         Pool: Azure Pipelines
         OsVmImage: macOS-11
         BuildConfigurations:
