@@ -372,15 +372,15 @@ jobs:
 
         - ${{ if ne(configuration.Value.AptDependencies, '') }}:
           # Install apt dependencies (if appropriate)
-          - pwsh: sudo apt update && sudo apt install -y ${{ parameters.AptDependencies }}
+          - pwsh: sudo apt update && sudo apt install -y ${{ configuration.Value.AptDependencies }}
             displayName: Install dependencies from apt - ${{ configuration.Key }}
 
         - ${{ if ne(configuration.Value.VcpkgInstall, '') }}:
           - pwsh: |
               if ($IsWindows) {
-                .\vcpkg.exe install ${{ parameters.VcpkgInstall }}
+                .\vcpkg.exe install ${{ configuration.Value.VcpkgInstall }}
               } else {
-                ./vcpkg install ${{ parameters.VcpkgInstall }}
+                ./vcpkg install ${{ configuration.Value.VcpkgInstall }}
               }
             workingDirectory: $(VCPKG_INSTALLATION_ROOT)
             displayName: vcpkg install - ${{ configuration.Key }}
