@@ -280,16 +280,11 @@ jobs:
       value: ""
     - name: AZURE_TEST_MODE
       value: "PLAYBACK"
-    # Compatibility with the old build architecture
-    # TODO: Eliminate this and use template logic to shorten the number of
-    # steps instead.
-    - name: OSVmImage
-      value: ${{ machine.Value.OsVmImage }}
 
     steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
         parameters:
-          AgentImage: $(OSVmImage)
+          AgentImage: ${{ machine.Value.OsVmImage }}
 
       - pwsh: |
           $TargetPath = "$(Agent.TempDirectory)/vcpkg"
