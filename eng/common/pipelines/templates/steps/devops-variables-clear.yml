@@ -7,7 +7,6 @@ parameters:
   default: false
 
 steps:
-  # TODO: Refactor to eng/common script
   - pwsh: |
       $rawVariables = @"
         ${{ convertToJson(parameters.Variables) }}
