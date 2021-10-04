@@ -17,6 +17,9 @@ parameters:
   - name: CoverageEnabled
     type: boolean
     default: true
+  - name: DisplayNameDecorator
+    type: string
+    default: ''
 
 steps:
   # Validate all the files are formatted correctly according to the
@@ -41,7 +44,7 @@ steps:
       echo Success, all files are formatted correctly according to the .clang-format file.
       exit 0
 
-    displayName: Validate Clang Format
+    displayName: Validate Clang Format ${{ parameters.DisplayNameDecorator }}
     condition: and(succeededOrFailed(), eq(variables['CHECK_CLANG_FORMAT'], 1))
 
   - ${{ each artifact in parameters.Artifacts }}:
@@ -56,10 +59,11 @@ steps:
       GenerateArgs: "$(CmakeArgs)"
       BuildArgs: "$(BuildArgs)"
       Env: "$(CmakeEnvArg)"
+      DisplayNameDecorator: ${{ parameters.DisplayNameDecorator }}
 
   - script: ctest -C Debug -V --tests-regex ${{ parameters.CtestRegex }}
     workingDirectory: build
-    displayName: ctest
+    displayName: ctest ${{ parameters.DisplayNameDecorator }}
 
   - ${{ if eq(parameters.CoverageEnabled, true) }}:
     - pwsh: |
@@ -67,7 +71,7 @@ steps:
         dotnet tool install -g dotnet-reportgenerator-globaltool
         dotnet tool install dotnet-reportgenerator-globaltool --tool-path $toolsDirectory
         Write-Host "##vso[task.setvariable variable=ToolsDirectory]$toolsDirectory"
-      displayName: Install coverage tools
+      displayName: Install coverage tools ${{ parameters.DisplayNameDecorator }}
       condition: and(succeeded(), eq(variables['ToolsDirectory'], ''))
 
     # Make coverage targets (specified in coverage_targets.txt) and assemble
@@ -76,12 +80,12 @@ steps:
         make VERBOSE=1 `cat ${{ parameters.ServiceDirectory }}-targets-coverage.txt`
         $(ToolsDirectory)/reportgenerator "-reports:${{ parameters.CoverageReportPath }}" "-targetdir:." "-reporttypes:Cobertura"
       workingDirectory: build
-      displayName: Generate Code Coverage Data
+      displayName: Generate Code Coverage Data ${{ parameters.DisplayNameDecorator }}
       condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], ''))
 
     - task: PublishCodeCoverageResults@1
       inputs:
         codeCoverageTool: Cobertura
         summaryFileLocation: '$(Build.SourcesDirectory)/**/Cobertura.xml'
-      displayName: Publish Code Coverage to DevOps
+      displayName: Publish Code Coverage to DevOps ${{ parameters.DisplayNameDecorator }}
       condition: and(succeededOrFailed(), ne(variables['CODE_COVERAGE'], ''))

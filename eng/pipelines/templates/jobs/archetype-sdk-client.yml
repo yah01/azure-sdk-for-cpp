@@ -52,6 +52,7 @@ parameters:
             VcpkgInstall: 'curl[ssl] libxml2 openssl'
             VCPKG_DEFAULT_TRIPLET: 'x64-linux'
             BuildArgs: '-j 10'
+
       Ubuntu18_2:
         Pool: azsdk-pool-mms-ubuntu-1804-general
         OSVmImage: MMSUbuntu18.04
@@ -70,6 +71,7 @@ parameters:
             VCPKG_DEFAULT_TRIPLET: 'x64-linux'
             CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
             BuildArgs: '-j 10'
+
       Ubuntu20:
         Pool: azsdk-pool-mms-ubuntu-2004-general
         OSVmImage: MMSUbuntu20.04
@@ -87,6 +89,7 @@ parameters:
             VCPKG_DEFAULT_TRIPLET: 'x64-linux'
             CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
             BuildArgs: '-j 10'
+
       Windows_1:
         Pool: azsdk-pool-mms-win-2019-general
         OSVmImage: MMS2019
@@ -126,6 +129,7 @@ parameters:
             CMAKE_GENERATOR_PLATFORM: Win32
             CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
             BuildArgs: '--parallel 8'
+
       Windows_2:
         Pool: azsdk-pool-mms-win-2019-general
         OSVmImage: MMS2019
@@ -170,6 +174,10 @@ parameters:
             CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
             BuildArgs: '--parallel 8'
 
+      Windows_3:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
+        BuildConfigurations:
           # UWP x64
           Win_uwp_x64_debug:
             CMAKE_GENERATOR: 'Visual Studio 16 2019'
@@ -177,7 +185,7 @@ parameters:
             CMAKE_SYSTEM_NAME: 'WindowsStore'
             CMAKE_SYSTEM_VERSION: '10.0'
             # curl does not compile on arm64-uwp
-            CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON'
+            CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
             BuildArgs: '--parallel 8'
           Win_uwp_x64_release:
             CMAKE_GENERATOR: 'Visual Studio 16 2019'
@@ -186,7 +194,7 @@ parameters:
             CMAKE_SYSTEM_VERSION: '10.0'
             CMAKE_BUILD_TYPE: Release
             # curl does not compile on arm64-uwp
-            CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON'
+            CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
             BuildArgs: '--parallel 8'
 
           # UWP x86
@@ -196,7 +204,7 @@ parameters:
             CMAKE_SYSTEM_NAME: 'WindowsStore'
             CMAKE_SYSTEM_VERSION: '10.0'
             # curl does not compile on arm64-uwp
-            CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON'
+            CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
             BuildArgs: '--parallel 8'
           Win_uwp_x86_release:
             CMAKE_GENERATOR: 'Visual Studio 16 2019'
@@ -205,7 +213,7 @@ parameters:
             CMAKE_SYSTEM_VERSION: '10.0'
             CMAKE_BUILD_TYPE: Release
             # curl does not compile on arm64-uwp
-            CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON'
+            CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
             BuildArgs: '--parallel 8'
 
       MacOS1014:
@@ -223,6 +231,7 @@ parameters:
             CMAKE_BUILD_TYPE: Release
             CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON'
             BuildArgs: '-j 4'
+
       MacOS1015:
         Pool: Azure Pipelines
         OsVmImage: macOS-10.15
@@ -232,6 +241,7 @@ parameters:
             VCPKG_DEFAULT_TRIPLET: 'x64-osx'
             CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
             BuildArgs: '-j 4'
+
       MacOS11:
         Pool: Azure Pipelines
         OsVmImage: macOS-11
@@ -341,24 +351,6 @@ jobs:
         # TODO: Consider AptDependencies should be a property in itself,
         # variables should be nested further?
         - ${{ if ne(configuration.Value.AptDependencies, '') }}:
-        #   # Add g++5 repo to ubuntu
-        #   - pwsh: |
-        #       if (!$isLinux) {
-        #         Write-Host "Non-Linux system. Exiting."
-        #         exit 0
-        #       }
-        #       $source = 'deb http://ftp.debian.org/debian/ stretch main'
-        #       $sourceListFile = '/etc/apt/sources.list'
-        #       $sourceList = Get-Content $sourceListFile
-        #       if (!$sourceList.Where({ $_ -eq $sourceList })) {
-        #         Write-Host "Adding $source to /etc/apt/sources.list"
-        #         sudo sh -c "echo '$source' >> $sourceListFile"
-        #       }
-        #       cat $sourceListFile
-        #     displayName: Add g++ 5 repo
-        #     condition: >-
-        #       and(succeeded(), contains(variables['AptDependencies'], 'g++-5'))
-
           # Install apt dependencies (if appropriate)
           - pwsh: sudo apt update && sudo apt install -y $(AptDependencies)
             condition: and(succeededOrFailed(), ne(variables['AptDependencies'], ''))
