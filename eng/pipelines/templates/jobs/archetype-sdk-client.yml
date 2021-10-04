@@ -95,7 +95,8 @@ parameters:
             VcpkgInstall: 'curl[ssl] libxml2 openssl'
             EnvVars:
               VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-              CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
+              CMAKE_BUILD_TYPE: Release
+              CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
               BuildArgs: '-j 10'
 
       Windows_1:
@@ -180,6 +181,8 @@ parameters:
             EnvVars:
               CMAKE_GENERATOR: 'Visual Studio 16 2019'
               CMAKE_GENERATOR_PLATFORM: arm64
+              CMAKE_SYSTEM_NAME: WindowsStore
+              CMAKE_SYSTEM_VERSION: 10.0
               # curl does not compile on arm64-uwp
               CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
               BuildArgs: '--parallel 8'
@@ -187,6 +190,8 @@ parameters:
             EnvVars:
               CMAKE_GENERATOR: 'Visual Studio 16 2019'
               CMAKE_GENERATOR_PLATFORM: arm64
+              CMAKE_SYSTEM_NAME: WindowsStore
+              CMAKE_SYSTEM_VERSION: 10.0
               CMAKE_BUILD_TYPE: Release
               # curl does not compile on arm64-uwp
               CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
@@ -214,7 +219,7 @@ parameters:
               CMAKE_SYSTEM_VERSION: '10.0'
               CMAKE_BUILD_TYPE: Release
               # curl does not compile on arm64-uwp
-              CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
+              CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
               BuildArgs: '--parallel 8'
 
           # UWP x86
@@ -235,7 +240,7 @@ parameters:
               CMAKE_SYSTEM_VERSION: '10.0'
               CMAKE_BUILD_TYPE: Release
               # curl does not compile on arm64-uwp
-              CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
+              CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
               BuildArgs: '--parallel 8'
 
       MacOS1014:
