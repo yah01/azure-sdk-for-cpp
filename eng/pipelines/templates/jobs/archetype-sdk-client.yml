@@ -51,11 +51,6 @@ parameters:
               CC: '/usr/bin/gcc-9'
               CXX: '/usr/bin/g++-9'
               BuildArgs: '-j 10'
-          Linux_x64:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-              BuildArgs: '-j 10'
           Linux_x64_with_unit_test_release:
             VcpkgInstall: 'curl[ssl] libxml2 openssl'
             EnvVars:
@@ -67,6 +62,11 @@ parameters:
         Pool: azsdk-pool-mms-ubuntu-1804-general
         OSVmImage: MMSUbuntu18.04
         BuildConfigurations:
+          Linux_x64:
+            VcpkgInstall: 'curl[ssl] libxml2 openssl'
+            EnvVars:
+              VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+              BuildArgs: '-j 10'
           Linux_x64_with_unit_test:
             VcpkgInstall: 'curl[ssl] libxml2 openssl'
             AptDependencies: 'gcovr lcov'
