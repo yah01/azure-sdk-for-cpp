@@ -371,7 +371,7 @@ jobs:
           )
 
       - ${{ each configuration in machine.Value.BuildConfigurations }}:
-        - template: /eng/pipelines/templates/steps/devops-variables-set.yml
+        - template: /eng/common/pipelines/templates/steps/devops-variables-set.yml
           parameters:
             Variables: ${{ configuration.Value.EnvVars }}
 
@@ -406,7 +406,7 @@ jobs:
             Get-ChildItem -Path build -Recurse -ErrorAction Ignore
           displayName: Between-build cleanup - ${{ configuration.Key }}
 
-        - template: /eng/pipelines/templates/steps/devops-variables-clear.yml
+        - template: /eng/common/pipelines/templates/steps/devops-variables-clear.yml
           parameters:
             Variables: ${{ configuration.Value.EnvVars }}
 
