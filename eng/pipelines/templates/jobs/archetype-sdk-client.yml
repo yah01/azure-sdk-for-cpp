@@ -278,7 +278,7 @@ parameters:
 
 
 jobs:
-  - job: Validate_${{ machine.Key }}
+  - job: Validate
     condition: and(succeededOrFailed(), ne(variables['Skip.Test'], 'true'))
     strategy:
       matrix: ${{ parameters.Matrix }}
