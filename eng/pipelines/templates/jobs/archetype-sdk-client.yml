@@ -336,6 +336,10 @@ jobs:
             not(eq(variables['Skip.VcpkgCache'], 'true'))
           )
 
+      - pwsh: sudo apt update && sudo apt install -y $(AptDependencies)
+        condition: and(succeeded(), ne(variables['AptDependencies'], ''))
+        displayName: Install dependencies from apt
+
       - pwsh: |
           $TargetPath = "$(Agent.TempDirectory)/vcpkg"
           Remove-Item -Path $TargetPath -Recurse -Force -ErrorAction Ignore
@@ -357,10 +361,6 @@ jobs:
             succeeded(),
             ne(variables['VcpkgRestoredFromCache'], true)
           )
-
-      - pwsh: sudo apt update && sudo apt install -y $(AptDependencies)
-        condition: and(succeeded(), ne(variables['AptDependencies'], ''))
-        displayName: Install dependencies from apt
 
       - pwsh: |
           if ($IsWindows) {
