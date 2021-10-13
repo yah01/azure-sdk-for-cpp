@@ -26,278 +26,266 @@ parameters:
       Ubuntu18_1:
         Pool: azsdk-pool-mms-ubuntu-1804-general
         OSVmImage: MMSUbuntu18.04
-        BuildConfigurations:
-          Linux_x64_gcc5:
-            AptDependencies: g++-5
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-              # Can't set CC and CXX to env because it would affect VCPKG building which requires g++ > 7
-              # So, this conf will set the CXX for cmake inline.
-              CmakeEnvArg: 'CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake'
-              BuildArgs: '-j 4'
-          Linux_x64_gcc8:
-            AptDependencies: g++-8
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-              CC: '/usr/bin/gcc-8'
-              CXX: '/usr/bin/g++-8'
-              BuildArgs: '-j 10'
-          Linux_x64_gcc9:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-              CC: '/usr/bin/gcc-9'
-              CXX: '/usr/bin/g++-9'
-              BuildArgs: '-j 10'
-          Linux_x64_with_unit_test_release:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-              CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
-              BuildArgs: '-j 10'
-
+        AptDependencies: g++-5
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+        # Can't set CC and CXX to env because it would affect VCPKG building which requires g++ > 7
+        # So, this conf will set the CXX for cmake inline.
+        CmakeEnvArg: 'CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake'
+        BuildArgs: '-j 4'
       Ubuntu18_2:
         Pool: azsdk-pool-mms-ubuntu-1804-general
         OSVmImage: MMSUbuntu18.04
-        BuildConfigurations:
-          Linux_x64:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-              BuildArgs: '-j 10'
-          Linux_x64_with_unit_test:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            AptDependencies: 'gcovr lcov'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-              CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -DBUILD_CODE_COVERAGE=ON -DCMAKE_VERBOSE_MAKEFILE=ON'
-              # Make coverage report to avoid running the test exe because CI step will run it
-              CODE_COVERAGE_COLLECT_ONLY: 1
-              CODE_COVERAGE: enabled
-              BuildArgs: '-j 10'
+        AptDependencies: g++-8
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+        CC: '/usr/bin/gcc-8'
+        CXX: '/usr/bin/g++-8'
+        BuildArgs: '-j 10'
+      Ubuntu18_3:
+        Pool: azsdk-pool-mms-ubuntu-1804-general
+        OSVmImage: MMSUbuntu18.04
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+        CC: '/usr/bin/gcc-9'
+        CXX: '/usr/bin/g++-9'
+        BuildArgs: '-j 10'
+      Ubuntu18_4:
+        Pool: azsdk-pool-mms-ubuntu-1804-general
+        OSVmImage: MMSUbuntu18.04
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+        CmakeArgs: ' -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
+        BuildArgs: '-j 10'
 
-      Ubuntu20:
+      Ubuntu18_5:
+        Pool: azsdk-pool-mms-ubuntu-1804-general
+        OSVmImage: MMSUbuntu18.04
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+        BuildArgs: '-j 10'
+      Ubuntu18_6:
+        Pool: azsdk-pool-mms-ubuntu-1804-general
+        OSVmImage: MMSUbuntu18.04
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        AptDependencies: 'gcovr lcov'
+        VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+        CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -DBUILD_CODE_COVERAGE=ON -DCMAKE_VERBOSE_MAKEFILE=ON'
+        # Make coverage report to avoid running the test exe because CI step will run it
+        CODE_COVERAGE_COLLECT_ONLY: 1
+        CODE_COVERAGE: enabled
+        BuildArgs: '-j 10'
+
+      Ubuntu20_1:
         Pool: azsdk-pool-mms-ubuntu-2004-general
         OSVmImage: MMSUbuntu20.04
-        BuildConfigurations:
-          Ubuntu_20_x64_clang:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            AptDependencies: 'clang-11'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-              CHECK_CLANG_FORMAT: 1
-              CC: '/usr/bin/clang-11'
-              CXX: '/usr/bin/clang++-11'
-              BuildArgs: '-j 4'
-          Ubuntu20_x64_with_unit_test_release:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-linux'
-              CMAKE_BUILD_TYPE: Release
-              CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
-              BuildArgs: '-j 10'
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        AptDependencies: 'clang-11'
+        VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+        CHECK_CLANG_FORMAT: 1
+        CC: '/usr/bin/clang-11'
+        CXX: '/usr/bin/clang++-11'
+        BuildArgs: '-j 4'
+      Ubuntu20_2:
+        Pool: azsdk-pool-mms-ubuntu-2004-general
+        OSVmImage: MMSUbuntu20.04
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        VCPKG_DEFAULT_TRIPLET: 'x64-linux'
+        CMAKE_BUILD_TYPE: Release
+        CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
+        BuildArgs: '-j 10'
 
       Windows_1:
         Pool: azsdk-pool-mms-win-2019-general
         OSVmImage: MMS2019
-        BuildConfigurations:
-          Win_x86_debug:
-            VcpkgInstall: 'curl[winssl]'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x86-windows-static'
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: Win32
-              CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON' #Leaving curl on here to explicitly test what the default behavior is on windows.
-              BuildArgs: '--parallel 8'
-          Win_x86_release:
-            VcpkgInstall: 'curl[winssl]'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x86-windows-static'
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: Win32
-              CMAKE_BUILD_TYPE: Release
-              CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON' #Leaving curl on here to explicitly test what the default behavior is on windows.
-              BuildArgs: '--parallel 8'
-          Win_x64_debug:
-            VcpkgInstall: 'curl[winssl]'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: x64
-              BuildArgs: '--parallel 8'
-          Win_x64_release:
-            VcpkgInstall: 'curl[winssl]'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: x64
-              CMAKE_BUILD_TYPE: Release
-              BuildArgs: '--parallel 8'
-          Win_x86_with_unit_test:
-            VcpkgInstall: 'curl[winssl]'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x86-windows-static'
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: Win32
-              CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
-              BuildArgs: '--parallel 8'
-
+        VcpkgInstall: 'curl[winssl]'
+        VCPKG_DEFAULT_TRIPLET: 'x86-windows-static'
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: Win32
+        CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON' #Leaving curl on here to explicitly test what the default behavior is on windows.
+        BuildArgs: '--parallel 8'
       Windows_2:
         Pool: azsdk-pool-mms-win-2019-general
         OSVmImage: MMS2019
-        BuildConfigurations:
-          Win_x64_with_unit_test:
-            VcpkgInstall: 'curl[winssl]'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: x64
-              CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
-              BuildArgs: '--parallel 8'
-
-          # ARM 64
-          Win_arm64_debug:
-            VcpkgInstall: 'curl[winssl]'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'arm64-windows'
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: arm64
-              CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
-              BuildArgs: '--parallel 8'
-          Win_arm64_release:
-            VcpkgInstall: 'curl[winssl]'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'arm64-windows'
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: arm64
-              CMAKE_BUILD_TYPE: Release
-              CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
-              BuildArgs: '--parallel 8'
-
-          # UWP ARM 64
-          Win_uwp_arm64_debug:
-            EnvVars:
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: arm64
-              CMAKE_SYSTEM_NAME: WindowsStore
-              CMAKE_SYSTEM_VERSION: 10.0
-              # curl does not compile on arm64-uwp
-              CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
-              BuildArgs: '--parallel 8'
-          Win_uwp_arm64_release:
-            EnvVars:
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: arm64
-              CMAKE_SYSTEM_NAME: WindowsStore
-              CMAKE_SYSTEM_VERSION: 10.0
-              CMAKE_BUILD_TYPE: Release
-              # curl does not compile on arm64-uwp
-              CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
-              BuildArgs: '--parallel 8'
-
+        VcpkgInstall: 'curl[winssl]'
+        VCPKG_DEFAULT_TRIPLET: 'x86-windows-static'
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: Win32
+        CMAKE_BUILD_TYPE: Release
+        CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON' #Leaving curl on here to explicitly test what the default behavior is on windows.
+        BuildArgs: '--parallel 8'
       Windows_3:
         Pool: azsdk-pool-mms-win-2019-general
         OSVmImage: MMS2019
+        VcpkgInstall: 'curl[winssl]'
+        VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: x64
+        BuildArgs: '--parallel 8'
+      Windows_4:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
+        VcpkgInstall: 'curl[winssl]'
+        VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: x64
+        CMAKE_BUILD_TYPE: Release
+        BuildArgs: '--parallel 8'
+      Windows_5:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
+        VcpkgInstall: 'curl[winssl]'
+        VCPKG_DEFAULT_TRIPLET: 'x86-windows-static'
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: Win32
+        CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
+        BuildArgs: '--parallel 8'
+      Windows_6:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
+        VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: x64
+        CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
+        BuildArgs: '--parallel 8'
+
+      Windows_7:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
+        VcpkgInstall: 'curl[winssl]'
+        VCPKG_DEFAULT_TRIPLET: 'arm64-windows'
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: arm64
+        CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
+        BuildArgs: '--parallel 8'
+      Windows_8:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
+        VcpkgInstall: 'curl[winssl]'
+        VCPKG_DEFAULT_TRIPLET: 'arm64-windows'
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: arm64
+        CMAKE_BUILD_TYPE: Release
+        CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON -DBUILD_TRANSPORT_WINHTTP=ON'
+        BuildArgs: '--parallel 8'
+
+      Windows_9:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: arm64
+        CMAKE_SYSTEM_NAME: WindowsStore
+        CMAKE_SYSTEM_VERSION: 10.0
+        # curl does not compile on arm64-uwp
+        CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
+        BuildArgs: '--parallel 8'
+      Windows_10:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: arm64
+        CMAKE_SYSTEM_NAME: WindowsStore
+        CMAKE_SYSTEM_VERSION: 10.0
+        CMAKE_BUILD_TYPE: Release
+        # curl does not compile on arm64-uwp
+        CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
+        BuildArgs: '--parallel 8'
+
+      Windows_11:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: x64
+        CMAKE_SYSTEM_NAME: 'WindowsStore'
+        CMAKE_SYSTEM_VERSION: '10.0'
+        # curl does not compile on arm64-uwp
+        CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
+        BuildArgs: '--parallel 8'
+      Windows_12:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: x64
+        CMAKE_SYSTEM_NAME: 'WindowsStore'
+        CMAKE_SYSTEM_VERSION: '10.0'
+        CMAKE_BUILD_TYPE: Release
+        # curl does not compile on arm64-uwp
+        CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
+        BuildArgs: '--parallel 8'
+
+      Windows_13:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
         BuildConfigurations:
-          # UWP x64
-          Win_uwp_x64_debug:
-            EnvVars:
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: x64
-              CMAKE_SYSTEM_NAME: 'WindowsStore'
-              CMAKE_SYSTEM_VERSION: '10.0'
-              # curl does not compile on arm64-uwp
-              CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
-              BuildArgs: '--parallel 8'
-          Win_uwp_x64_release:
-            EnvVars:
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: x64
-              CMAKE_SYSTEM_NAME: 'WindowsStore'
-              CMAKE_SYSTEM_VERSION: '10.0'
-              CMAKE_BUILD_TYPE: Release
-              # curl does not compile on arm64-uwp
-              CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
-              BuildArgs: '--parallel 8'
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: Win32
+        CMAKE_SYSTEM_NAME: 'WindowsStore'
+        CMAKE_SYSTEM_VERSION: '10.0'
+        # curl does not compile on arm64-uwp
+        CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
+        BuildArgs: '--parallel 8'
+      Windows_14:
+        Pool: azsdk-pool-mms-win-2019-general
+        OSVmImage: MMS2019
+        CMAKE_GENERATOR: 'Visual Studio 16 2019'
+        CMAKE_GENERATOR_PLATFORM: Win32
+        CMAKE_SYSTEM_NAME: 'WindowsStore'
+        CMAKE_SYSTEM_VERSION: '10.0'
+        CMAKE_BUILD_TYPE: Release
+        # curl does not compile on arm64-uwp
+        CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
+        BuildArgs: '--parallel 8'
 
-          # UWP x86
-          Win_uwp_x86_debug:
-            EnvVars:
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: Win32
-              CMAKE_SYSTEM_NAME: 'WindowsStore'
-              CMAKE_SYSTEM_VERSION: '10.0'
-              # curl does not compile on arm64-uwp
-              CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON'
-              BuildArgs: '--parallel 8'
-          Win_uwp_x86_release:
-            EnvVars:
-              CMAKE_GENERATOR: 'Visual Studio 16 2019'
-              CMAKE_GENERATOR_PLATFORM: Win32
-              CMAKE_SYSTEM_NAME: 'WindowsStore'
-              CMAKE_SYSTEM_VERSION: '10.0'
-              CMAKE_BUILD_TYPE: Release
-              # curl does not compile on arm64-uwp
-              CmakeArgs: ' -DBUILD_TRANSPORT_WINHTTP=ON'
-              BuildArgs: '--parallel 8'
-
-      MacOS1014:
+      MacOS1014_1:
         Pool: Azure Pipelines
         OsVmImage: macOS-10.14
-        BuildConfigurations:
-          MacOS_x64_with_unit_test:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-osx'
-              CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
-              BuildArgs: '-j 4'
-          MacOS_x64_release:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-osx'
-              CMAKE_BUILD_TYPE: Release
-              CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON'
-              BuildArgs: '-j 4'
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        VCPKG_DEFAULT_TRIPLET: 'x64-osx'
+        CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
+        BuildArgs: '-j 4'
+      MacOS1014_2:
+        Pool: Azure Pipelines
+        OsVmImage: macOS-10.14
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        VCPKG_DEFAULT_TRIPLET: 'x64-osx'
+        CMAKE_BUILD_TYPE: Release
+        CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON'
+        BuildArgs: '-j 4'
 
-      MacOS1015:
+      MacOS1015_1:
         Pool: Azure Pipelines
         OsVmImage: macOS-10.15
-        BuildConfigurations:
-          MacOS_x64_with_unit_test:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-osx'
-              CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
-              BuildArgs: '-j 4'
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        VCPKG_DEFAULT_TRIPLET: 'x64-osx'
+        CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
+        BuildArgs: '-j 4'
 
-      MacOS11:
+      MacOS11_1:
         Pool: Azure Pipelines
         OsVmImage: macOS-11
-        BuildConfigurations:
-          MacOS_x64_with_unit_test:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-osx'
-              CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
-              BuildArgs: '-j 4'
-          MacOS_x64_release:
-            VcpkgInstall: 'curl[ssl] libxml2 openssl'
-            EnvVars:
-              VCPKG_DEFAULT_TRIPLET: 'x64-osx'
-              CMAKE_BUILD_TYPE: Release
-              CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON'
-              BuildArgs: '-j 4'
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        VCPKG_DEFAULT_TRIPLET: 'x64-osx'
+        CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
+        BuildArgs: '-j 4'
+      MacOS11_2:
+        Pool: Azure Pipelines
+        OsVmImage: macOS-11
+        VcpkgInstall: 'curl[ssl] libxml2 openssl'
+        VCPKG_DEFAULT_TRIPLET: 'x64-osx'
+        CMAKE_BUILD_TYPE: Release
+        CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON'
+        BuildArgs: '-j 4'
 
 
 jobs:
-- ${{ each machine in parameters.Matrix }}:
   - job: Validate_${{ machine.Key }}
     condition: and(succeededOrFailed(), ne(variables['Skip.Test'], 'true'))
+    strategy:
+      matrix: ${{ parameters.Matrix }}
+      maxParallel: 10
     pool:
-      name: ${{ machine.Value.Pool }}
-      vmImage: ${{ machine.Value.OsVmImage }}
+      name: $(Pool)
+      vmImage: $(OsVmImage)
 
     variables:
     - name: CMOCKA_XML_FILE
@@ -316,7 +304,7 @@ jobs:
     steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
         parameters:
-          AgentImage: ${{ machine.Value.OsVmImage }}
+          AgentImage: $(OsVmImage)
 
       - pwsh: |
           $TargetPath = "$(Agent.TempDirectory)/vcpkg"
@@ -370,198 +358,192 @@ jobs:
             ne(variables['VcpkgRestoredFromCache'], true)
           )
 
-      - ${{ each configuration in machine.Value.BuildConfigurations }}:
-        - template: /eng/common/pipelines/templates/steps/devops-variables-set.yml
-          parameters:
-            Variables: ${{ configuration.Value.EnvVars }}
-
-        - ${{ if ne(configuration.Value.AptDependencies, '') }}:
-          # Install apt dependencies (if appropriate)
-          - pwsh: sudo apt update && sudo apt install -y ${{ configuration.Value.AptDependencies }}
-            displayName: Install dependencies from apt - ${{ configuration.Key }}
-
-        - ${{ if ne(configuration.Value.VcpkgInstall, '') }}:
-          - pwsh: |
-              if ($IsWindows) {
-                .\vcpkg.exe install ${{ configuration.Value.VcpkgInstall }}
-              } else {
-                ./vcpkg install ${{ configuration.Value.VcpkgInstall }}
-              }
-            workingDirectory: $(VCPKG_INSTALLATION_ROOT)
-            displayName: vcpkg install - ${{ configuration.Key }}
-
-        - template: /eng/pipelines/templates/steps/ci.yml
-          parameters:
-            Artifacts: ${{ parameters.Artifacts }}
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
-            TestPipeline: ${{ parameters.TestPipeline }}
-            CtestRegex: ${{ parameters.CtestRegex }}
-            CoverageReportPath: ${{ parameters.CoverageReportPath }}
-            CoverageEnabled: ${{ parameters.CoverageEnabled }}
-            DisplayNameDecorator: '- ${{ configuration.Key }}'
-
-        - pwsh: |
-            git clean -xdf
-            Remove-Item build -Recurse -Force -ErrorAction Ignore
-            Get-ChildItem -Path build -Recurse -ErrorAction Ignore
-          displayName: Between-build cleanup - ${{ configuration.Key }}
-
-        - template: /eng/common/pipelines/templates/steps/devops-variables-clear.yml
-          parameters:
-            Variables: ${{ configuration.Value.EnvVars }}
-
-# Disable build for cpp - client
-- ${{ if ne(parameters.ServiceDirectory, 'not-specified' )}}:
-  - job: GenerateReleaseArtifacts
-    pool:
-      name: azsdk-pool-mms-win-2019-general
-      vmImage: MMS2019
-    variables:
-      VcpkgDependencies: curl[winssl] libxml2
-      VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
-    steps:
-      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
-        parameters:
-          ContinueOnError: false
-
-      - template: /eng/common/pipelines/templates/steps/verify-links.yml
-        parameters:
-          Directory: ''
-          CheckLinkGuidance: $true
-
-      - ${{ each artifact in parameters.Artifacts }}: 
-        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-          parameters:
-            PackageName: ${{ artifact.Name }}
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
-            TestPipeline: ${{ parameters.TestPipeline }}
+      - pwsh: sudo apt update && sudo apt install -y $(AptDependencies)
+        condition: and(succeeded(), ne(variables['AptDependencies'], ''))
+        displayName: Install dependencies from apt
 
       - pwsh: |
-          $setupFile="doxygen-1.8.18-setup.exe";
+          if ($IsWindows) {
+            .\vcpkg.exe install $(VcpkgInstall)
+          } else {
+            ./vcpkg install $(VcpkgInstall)
+          }
+        workingDirectory: $(VCPKG_INSTALLATION_ROOT)
+        condition: and(succeeded(), ne(variables['VcpkgInstall'], ''))
+        displayName: vcpkg install
 
-          Invoke-WebRequest `
-            -MaximumRetryCount 10 `
-            -Uri "https://azuresdktooling.blob.core.windows.net/dependencies/$setupFile" `
-            -OutFile $setupFile `
-          | Wait-Process;
-
-          Start-Process -Filepath .\$setupFile -ArgumentList @("/VERYSILENT") -Wait
-        workingDirectory: $(Agent.TempDirectory)
-        displayName: Download and Install Doxygen
-
-      # Install dependencies required for build from vcpkg
-      # TODO: We should be able to generate docs without having to install these
-      # prerequisites:
-      - template: /eng/pipelines/templates/steps/vcpkg.yml
+      - template: /eng/pipelines/templates/steps/ci.yml
         parameters:
-          DependenciesVariableName: VcpkgDependencies
+          Artifacts: ${{ parameters.Artifacts }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          TestPipeline: ${{ parameters.TestPipeline }}
+          CtestRegex: ${{ parameters.CtestRegex }}
+          CoverageReportPath: ${{ parameters.CoverageReportPath }}
+          CoverageEnabled: ${{ parameters.CoverageEnabled }}
+          DisplayNameDecorator: ''
 
-      - template: /eng/pipelines/templates/steps/cmake-build.yml
-        parameters:
-          Build: false
-          GenerateArgs: >-
-            -DINSTALL_GTEST=OFF
-            -DBUILD_TESTING=OFF
-            -DBUILD_TRANSPORT_CURL=OFF
-            -DBUILD_DOCUMENTATION=YES
+      # - pwsh: |
+      #     git clean -xdf
+      #     Remove-Item build -Recurse -Force -ErrorAction Ignore
+      #     Get-ChildItem -Path build -Recurse -ErrorAction Ignore
+      #   displayName: Between-build cleanup - ${{ configuration.Key }}
 
-      - pwsh: npm install -g moxygen
-        displayName: Install Moxygen to generate markdown for docs.microsoft.com
+        # - template: /eng/common/pipelines/templates/steps/devops-variables-clear.yml
+        #   parameters:
+        #     Variables: ${{ configuration.Value.EnvVars }}
 
-      # Generate package spec JSON files for tagging the repo
-      - ${{ each artifact in parameters.Artifacts }}:
-          - pwsh: >-
-              New-Item
-              -ItemType directory
-              -Path $(Build.ArtifactStagingDirectory)
-              -Name packages/${{ artifact.Name }}
-            displayName: Create package info artifact location
+  # Disable build for cpp - client
+  - ${{ if ne(parameters.ServiceDirectory, 'not-specified' )}}:
+    - job: GenerateReleaseArtifacts
+      pool:
+        name: azsdk-pool-mms-win-2019-general
+        vmImage: MMS2019
+      variables:
+        VcpkgDependencies: curl[winssl] libxml2
+        VCPKG_DEFAULT_TRIPLET: 'x64-windows-static'
+      steps:
+        - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+          parameters:
+            ContinueOnError: false
 
-          - pwsh: |
-              $outputPath = Join-Path -Path $(Build.ArtifactStagingDirectory) packages/${{ artifact.Name }}/package-info.json
+        - template: /eng/common/pipelines/templates/steps/verify-links.yml
+          parameters:
+            Directory: ''
+            CheckLinkGuidance: $true
 
-              $version = eng/scripts/Get-PkgVersion -ServiceDirectory ${{ parameters.ServiceDirectory }} -PackageName ${{ artifact.Path }}
-              $outputObject = @{ version = $version.ToString(); name = '${{ artifact.Name }}'; packageName = "${{ artifact.Name }}_$version"; } | ConvertTo-Json
+        - ${{ each artifact in parameters.Artifacts }}: 
+          - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+            parameters:
+              PackageName: ${{ artifact.Name }}
+              ServiceDirectory: ${{ parameters.ServiceDirectory }}
+              TestPipeline: ${{ parameters.TestPipeline }}
 
-              Set-Content -Path $outputPath -Value $outputObject
+        - pwsh: |
+            $setupFile="doxygen-1.8.18-setup.exe";
 
-              # Set AZURE_SDK_VERSION for use in Doxygen generation
-              Write-Host "##vso[task.setvariable variable=AZURE_SDK_VERSION]$version"
-            displayName: Create package info JSON file
+            Invoke-WebRequest `
+              -MaximumRetryCount 10 `
+              -Uri "https://azuresdktooling.blob.core.windows.net/dependencies/$setupFile" `
+              -OutFile $setupFile `
+            | Wait-Process;
 
-          - task: Powershell@2
-            inputs:
-              targetType: inline
-              script: |
-                # If there is no vcpkg directory skip staging the vcpkg port artifacts
-                if (!(Test-Path build/vcpkg/ports/${{ artifact.VcpkgPortName }})) {
-                  Write-Host "No vcpkg port directory at build/vcpkg/ports/${{ artifact.VcpkgPortName }}"
-                  exit
+            Start-Process -Filepath .\$setupFile -ArgumentList @("/VERYSILENT") -Wait
+          workingDirectory: $(Agent.TempDirectory)
+          displayName: Download and Install Doxygen
+
+        # Install dependencies required for build from vcpkg
+        # TODO: We should be able to generate docs without having to install these
+        # prerequisites:
+        - template: /eng/pipelines/templates/steps/vcpkg.yml
+          parameters:
+            DependenciesVariableName: VcpkgDependencies
+
+        - template: /eng/pipelines/templates/steps/cmake-build.yml
+          parameters:
+            Build: false
+            GenerateArgs: >-
+              -DINSTALL_GTEST=OFF
+              -DBUILD_TESTING=OFF
+              -DBUILD_TRANSPORT_CURL=OFF
+              -DBUILD_DOCUMENTATION=YES
+
+        - pwsh: npm install -g moxygen
+          displayName: Install Moxygen to generate markdown for docs.microsoft.com
+
+        # Generate package spec JSON files for tagging the repo
+        - ${{ each artifact in parameters.Artifacts }}:
+            - pwsh: >-
+                New-Item
+                -ItemType directory
+                -Path $(Build.ArtifactStagingDirectory)
+                -Name packages/${{ artifact.Name }}
+              displayName: Create package info artifact location
+
+            - pwsh: |
+                $outputPath = Join-Path -Path $(Build.ArtifactStagingDirectory) packages/${{ artifact.Name }}/package-info.json
+
+                $version = eng/scripts/Get-PkgVersion -ServiceDirectory ${{ parameters.ServiceDirectory }} -PackageName ${{ artifact.Path }}
+                $outputObject = @{ version = $version.ToString(); name = '${{ artifact.Name }}'; packageName = "${{ artifact.Name }}_$version"; } | ConvertTo-Json
+
+                Set-Content -Path $outputPath -Value $outputObject
+
+                # Set AZURE_SDK_VERSION for use in Doxygen generation
+                Write-Host "##vso[task.setvariable variable=AZURE_SDK_VERSION]$version"
+              displayName: Create package info JSON file
+
+            - task: Powershell@2
+              inputs:
+                targetType: inline
+                script: |
+                  # If there is no vcpkg directory skip staging the vcpkg port artifacts
+                  if (!(Test-Path build/vcpkg/ports/${{ artifact.VcpkgPortName }})) {
+                    Write-Host "No vcpkg port directory at build/vcpkg/ports/${{ artifact.VcpkgPortName }}"
+                    exit
+                  }
+
+                  New-Item `
+                    -ItemType Directory `
+                    $(Build.ArtifactStagingDirectory)/packages/${{ artifact.Name }}/vcpkg -Force
+
+                  Copy-Item -Recurse `
+                    build/vcpkg/ports/${{ artifact.VcpkgPortName }}/. `
+                    $(Build.ArtifactStagingDirectory)/packages/${{ artifact.Name }}/vcpkg/port 
+                pwsh: true
+              displayName: Copy vcpkg port files from build
+
+            - pwsh: |
+                $outputPath = Join-Path -Path $(Build.ArtifactStagingDirectory) packages/${{ artifact.Name }}
+                $changelogPath = "sdk/${{ parameters.ServiceDirectory }}/${{ artifact.Path }}/CHANGELOG.md"
+
+                if (Test-Path $changeLogPath) {
+                  Copy-Item sdk/${{ parameters.ServiceDirectory }}/${{ artifact.Path }}/CHANGELOG.md $outputPath
+                } else {
+                  Write-Warning "$changeLogPath does not exist"
                 }
+              displayName: Copy CHANGELOG.md to package artifact
 
-                New-Item `
-                  -ItemType Directory `
-                  $(Build.ArtifactStagingDirectory)/packages/${{ artifact.Name }}/vcpkg -Force
+            - script: cmake --build . --target ${{ artifact.Name }}-docs
+              workingDirectory: build
+              displayName: Generate docs (${{ artifact.Name }}-docs)
 
-                Copy-Item -Recurse `
-                  build/vcpkg/ports/${{ artifact.VcpkgPortName }}/. `
-                  $(Build.ArtifactStagingDirectory)/packages/${{ artifact.Name }}/vcpkg/port 
-              pwsh: true
-            displayName: Copy vcpkg port files from build
+            - task: PowerShell@2
+              inputs:
+                targetType: filePath
+                filePath: eng/scripts/New-DocsMsArtifact.ps1
+                arguments: >-
+                  -ServiceDirectory ${{ parameters.ServiceDirectory }}
+                  -PackageName ${{ artifact.Name }}
+                  -TargetFolder $(Build.ArtifactStagingDirectory)/packages/${{ artifact.Name }}/docs/docs.ms
+                ignoreLASTEXITCODE: true
+                pwsh: true
+              displayName: Generate artifacts for docs.ms
 
-          - pwsh: |
-              $outputPath = Join-Path -Path $(Build.ArtifactStagingDirectory) packages/${{ artifact.Name }}
-              $changelogPath = "sdk/${{ parameters.ServiceDirectory }}/${{ artifact.Path }}/CHANGELOG.md"
+            - pwsh: |
+                New-Item -ItemType directory -Path $(Build.ArtifactStagingDirectory) -Name docs/${{ artifact.Name }}
+              displayName: Create doc artifact location
 
-              if (Test-Path $changeLogPath) {
-                Copy-Item sdk/${{ parameters.ServiceDirectory }}/${{ artifact.Path }}/CHANGELOG.md $outputPath
-              } else {
-                Write-Warning "$changeLogPath does not exist"
-              }
-            displayName: Copy CHANGELOG.md to package artifact
+            - task: CopyFiles@2
+              inputs:
+                sourceFolder: $(Build.ArtifactStagingDirectory)/packages/${{ artifact.Name }}
+                contents: package-info.json
+                targetFolder: build/sdk/${{ parameters.ServiceDirectory }}/${{ artifact.Path }}/docs/html
+              displayName: Copy package-info.json to documentation path
 
-          - script: cmake --build . --target ${{ artifact.Name }}-docs
-            workingDirectory: build
-            displayName: Generate docs (${{ artifact.Name }}-docs)
+            - task: CopyFiles@2
+              inputs:
+                sourceFolder: build/sdk/${{ parameters.ServiceDirectory }}/${{ artifact.Path }}/docs/html
+                targetFolder: $(Build.ArtifactStagingDirectory)/docs/${{ artifact.Name }}
+              displayName: Copy documentation to artifact staging directory
 
-          - task: PowerShell@2
-            inputs:
-              targetType: filePath
-              filePath: eng/scripts/New-DocsMsArtifact.ps1
-              arguments: >-
-                -ServiceDirectory ${{ parameters.ServiceDirectory }}
-                -PackageName ${{ artifact.Name }}
-                -TargetFolder $(Build.ArtifactStagingDirectory)/packages/${{ artifact.Name }}/docs/docs.ms
-              ignoreLASTEXITCODE: true
-              pwsh: true
-            displayName: Generate artifacts for docs.ms
+        - task: PublishPipelineArtifact@1
+          inputs:
+            artifactName: packages
+            path: $(Build.ArtifactStagingDirectory)/packages
 
-          - pwsh: |
-              New-Item -ItemType directory -Path $(Build.ArtifactStagingDirectory) -Name docs/${{ artifact.Name }}
-            displayName: Create doc artifact location
+        # After all docs artifacts are generated publish docs artifacts
+        - task: PublishPipelineArtifact@1
+          inputs:
+            artifactName: docs
+            path: $(Build.ArtifactStagingDirectory)/docs
 
-          - task: CopyFiles@2
-            inputs:
-              sourceFolder: $(Build.ArtifactStagingDirectory)/packages/${{ artifact.Name }}
-              contents: package-info.json
-              targetFolder: build/sdk/${{ parameters.ServiceDirectory }}/${{ artifact.Path }}/docs/html
-            displayName: Copy package-info.json to documentation path
-
-          - task: CopyFiles@2
-            inputs:
-              sourceFolder: build/sdk/${{ parameters.ServiceDirectory }}/${{ artifact.Path }}/docs/html
-              targetFolder: $(Build.ArtifactStagingDirectory)/docs/${{ artifact.Name }}
-            displayName: Copy documentation to artifact staging directory
-
-      - task: PublishPipelineArtifact@1
-        inputs:
-          artifactName: packages
-          path: $(Build.ArtifactStagingDirectory)/packages
-
-      # After all docs artifacts are generated publish docs artifacts
-      - task: PublishPipelineArtifact@1
-        inputs:
-          artifactName: docs
-          path: $(Build.ArtifactStagingDirectory)/docs
-
-      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+        - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml

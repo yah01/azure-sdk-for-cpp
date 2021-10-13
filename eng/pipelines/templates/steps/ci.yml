@@ -59,11 +59,9 @@ steps:
       GenerateArgs: "$(CmakeArgs)"
       BuildArgs: "$(BuildArgs)"
       Env: "$(CmakeEnvArg)"
-      DisplayNameDecorator: ${{ parameters.DisplayNameDecorator }}
 
   - script: ctest -C Debug -V --tests-regex ${{ parameters.CtestRegex }}
     workingDirectory: build
-    displayName: ctest ${{ parameters.DisplayNameDecorator }}
 
   - ${{ if eq(parameters.CoverageEnabled, true) }}:
     - pwsh: |
