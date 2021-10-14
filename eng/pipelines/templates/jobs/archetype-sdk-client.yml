@@ -283,7 +283,7 @@ jobs:
     condition: and(succeededOrFailed(), ne(variables['Skip.Test'], 'true'))
     strategy:
       matrix: ${{ parameters.Matrix }}
-      maxParallel: 10
+      maxParallel: 12
     pool:
       name: $(Pool)
       vmImage: $(OsVmImage)
