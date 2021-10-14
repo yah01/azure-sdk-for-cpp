@@ -243,7 +243,7 @@ parameters:
         VcpkgInstall: 'curl[ssl] libxml2 openssl'
         VCPKG_DEFAULT_TRIPLET: 'x64-osx'
         CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
-        BuildArgs: '-j 4'
+        BuildArgs: '-j 8'
       MacOS1014_2:
         Pool: Azure Pipelines
         OsVmImage: macOS-10.14
@@ -251,7 +251,7 @@ parameters:
         VCPKG_DEFAULT_TRIPLET: 'x64-osx'
         CMAKE_BUILD_TYPE: Release
         CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON'
-        BuildArgs: '-j 4'
+        BuildArgs: '-j 8'
 
       MacOS1015_1:
         Pool: Azure Pipelines
@@ -259,7 +259,7 @@ parameters:
         VcpkgInstall: 'curl[ssl] libxml2 openssl'
         VCPKG_DEFAULT_TRIPLET: 'x64-osx'
         CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
-        BuildArgs: '-j 4'
+        BuildArgs: '-j 8'
 
       MacOS11_1:
         Pool: Azure Pipelines
@@ -267,7 +267,7 @@ parameters:
         VcpkgInstall: 'curl[ssl] libxml2 openssl'
         VCPKG_DEFAULT_TRIPLET: 'x64-osx'
         CmakeArgs: ' -DBUILD_TESTING=ON -DBUILD_PERFORMANCE_TESTS=ON -DRUN_LONG_UNIT_TESTS=ON -DBUILD_TRANSPORT_CURL=ON'
-        BuildArgs: '-j 4'
+        BuildArgs: '-j 8'
       MacOS11_2:
         Pool: Azure Pipelines
         OsVmImage: macOS-11
@@ -275,7 +275,7 @@ parameters:
         VCPKG_DEFAULT_TRIPLET: 'x64-osx'
         CMAKE_BUILD_TYPE: Release
         CmakeArgs: ' -DBUILD_TRANSPORT_CURL=ON'
-        BuildArgs: '-j 4'
+        BuildArgs: '-j 8'
 
 
 jobs:
