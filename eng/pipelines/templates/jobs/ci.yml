@@ -27,7 +27,8 @@ parameters:
   - name: CloudConfig
     type: object
     default: {}
-  # Supplied by archetype-sdk-tests-generate.yml dynamic matrix generator
+  # Supplied by archetype-sdk-tests-generate.yml dynamic matrix generator.
+  # Must be wired up to ensure population of parameters.Matrix
   - name: DependsOn
     type: string
     default: ''
@@ -39,9 +40,10 @@ parameters:
 jobs:
   - job:
     displayName: "Validate"
+    dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeededOrFailed(), ne(variables['Skip.Test'], 'true'))
     strategy:
-      matrix: $[ ${{ parameters.Matrix}} ]
+      matrix: $[ ${{ parameters.Matrix }} ]
       maxParallel: 12
     pool:
       vmImage: $(OSVmImage)
