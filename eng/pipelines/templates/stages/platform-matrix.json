@@ -142,7 +142,6 @@
             },
             "BuildSettings": {
                 "clang-11": {
-                    "AptDependencies": "clang-11",
                     "CHECK_CLANG_FORMAT": "1",
                     "CC": "/usr/bin/clang-11",
                     "CXX": "/usr/bin/clang++-11"
