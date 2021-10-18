@@ -25,8 +25,8 @@ jobs:
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
     parameters:
       MatrixConfigs:
-        - Name: base_product_matrix
-          Path: eng/scripts/job-matrix/samples/matrix.json
+        - Name: base
+          Path: eng/pipelines/templates/stages/platform-matrix.json
           Selection: all
           GenerateVMJobs: true
       JobTemplatePath: /eng/pipelines/templates/jobs/ci.yml
