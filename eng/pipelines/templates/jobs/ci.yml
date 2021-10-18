@@ -23,6 +23,19 @@ parameters:
   - name: Matrix
     type: string
 
+  # Supplied by archetype-sdk-tests-generate.yml dynamic matrix generator
+  - name: CloudConfig
+    type: object
+    default: {}
+  # Supplied by archetype-sdk-tests-generate.yml dynamic matrix generator
+  - name: DependsOn
+    type: string
+    default: ''
+  # Supplied by archetype-sdk-tests-generate.yml dynamic matrix generator
+  - name: UsePlatformContainer
+    type: boolean
+    default: false
+
 jobs:
   - job:
     displayName: "Validate"

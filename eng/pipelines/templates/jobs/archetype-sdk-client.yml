@@ -21,24 +21,9 @@ parameters:
     type: string
     default: 'sdk/*/*/*cov_xml.xml'
 
-  # Supplied by archetype-sdk-tests-generate.yml dynamic matrix generator
-  - name: CloudConfig
-    type: object
-    default: {}
-  # Supplied by archetype-sdk-tests-generate.yml dynamic matrix generator
-  - name: DependsOn
-    type: object
-    default: null
-  # Supplied by archetype-sdk-tests-generate.yml dynamic matrix generator
-  - name: UsePlatformContainer
-    type: boolean
-    default: false
-
 jobs:
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
     parameters:
-      CloudConfig:
-        - public
       MatrixConfigs:
         - Name: base_product_matrix
           Path: eng/scripts/job-matrix/samples/matrix.json
