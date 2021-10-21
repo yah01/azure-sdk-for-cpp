@@ -13,7 +13,10 @@
                     "Pool": "azsdk-pool-mms-ubuntu-1804-general",
                     "VcpkgInstall": "curl[ssl] libxml2 openssl",
                     "VCPKG_DEFAULT_TRIPLET": "x64-linux",
-                    "BuildArgs": "-j 10"
+                    "BuildArgs": "-j 10",
+                    "AptDependencies": "clang-11",
+                    "CC": "/usr/bin/clang-11",
+                    "CXX": "/usr/bin/clang++-11"
                 }
             },
             "BuildSettings": {
